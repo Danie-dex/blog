@@ -714,3 +714,37 @@ window.addEventListener("hashchange", handlePageNavigation);
 
 handlePageNavigation();
 
+function applyTheme(theme) {
+    const isDark = theme === "dark";
+
+    document.body.classList.toggle("dark-mode", isDark);
+
+    const button = document.getElementById("themeToggle");
+
+    if (button) {
+        button.textContent = isDark ? "☀️ Light" : "🌙 Dark";
+
+        button.setAttribute(
+            "aria-label",
+            isDark ? "Switch to light mode" : "Switch to dark mode"
+        );
+
+        button.setAttribute("aria-pressed", String(isDark));
+    }
+
+    document.documentElement.style.colorScheme =
+        isDark ? "dark" : "light";
+}
+
+function toggleTheme() {
+    const isDark = document.body.classList.contains("dark-mode");
+
+    const newTheme = isDark ? "light" : "dark";
+
+    localStorage.setItem("blogTheme", newTheme);
+
+    applyTheme(newTheme);
+}
+
+applyTheme(localStorage.getItem("blogTheme") || "light");
+
