@@ -1,35 +1,107 @@
-let posts = JSON.parse(localStorage.getItem("blogPosts")) || [
-
+const defaultPosts = [
     {
-        id: 1,
-
+        id: 1001,
         author: "Daniel",
-
-        title: "Welcome to My Blog",
-
-        content:
-            "Welcome to my blog!",
-
-        date: new Date().toLocaleDateString(),
-
-        likes: 0,
-
+        title: "Welcome to MyBlog! 🎉",
+        content: "Welcome to our community! This is a place to share ideas, discover interesting stories, and connect with people. Like, comment, react, and repost your favourite posts. What would you like to talk about today?",
+        date: "Oct 9, 2026",
+        likes: 24,
         liked: false,
-
         reactions: {
-            "👍": 0,
-            "❤️": 0,
-            "😂": 0,
-            "😮": 0,
+            "👍": 12,
+            "❤️": 18,
+            "😂": 4,
+            "😮": 2,
             "😢": 0
         },
-
-        comments: [],
-
-        reposts: 0
+        comments: [
+            { author: "Sarah", text: "I love the idea! Happy to be here.", date: "Oct 9, 2026" },
+            { author: "Michael", text: "Looking forward to sharing my thoughts.", date: "Oct 9, 2026" },
+            { author: "Grace", text: "This community is going to be amazing! ❤️", date: "Oct 9, 2026" }
+        ],
+        reposts: 7
+    },
+    {
+        id: 1002,
+        author: "Sarah Johnson",
+        title: "5 Habits That Can Change Your Life ✨",
+        content: "Start your day with purpose. Read a few pages of a book, learn something new, take care of your health, set small goals, and make time for people who matter. Consistency beats perfection. Which habit are you working on?",
+        date: "Oct 8, 2026",
+        likes: 42,
+        liked: false,
+        reactions: {
+            "👍": 21,
+            "❤️": 32,
+            "😂": 3,
+            "😮": 8,
+            "😢": 0
+        },
+        comments: [
+            { author: "David", text: "Consistency is really the key!", date: "Oct 8, 2026" },
+            { author: "Joy", text: "I'm working on reading every day.", date: "Oct 8, 2026" }
+        ],
+        reposts: 15
+    },
+    {
+        id: 1003,
+        author: "Michael James",
+        title: "Learning to Code: My Journey 💻",
+        content: "When I wrote my first lines of HTML, I never imagined how much I would enjoy building things for the web. If you are learning to code, don't give up when you get errors. Every bug you fix teaches you something new!",
+        date: "Oct 7, 2026",
+        likes: 31,
+        liked: false,
+        reactions: {
+            "👍": 25,
+            "❤️": 16,
+            "😂": 6,
+            "😮": 4,
+            "😢": 1
+        },
+        comments: [
+            { author: "Daniel", text: "Great advice for beginners!", date: "Oct 7, 2026" },
+            { author: "Peter", text: "Debugging is part of the journey.", date: "Oct 7, 2026" },
+            { author: "Sarah", text: "Never stop learning. 🚀", date: "Oct 7, 2026" }
+        ],
+        reposts: 9
+    },
+    {
+        id: 1004,
+        author: "Grace Williams",
+        title: "A Little Reminder to Keep Going 🌻",
+        content: "You don't have to have everything figured out today. Take one step, learn one lesson, and celebrate one small win. Progress may be slow, but every step forward matters.",
+        date: "Oct 6, 2026",
+        likes: 56,
+        liked: false,
+        reactions: {
+            "👍": 19,
+            "❤️": 45,
+            "😂": 2,
+            "😮": 3,
+            "😢": 7
+        },
+        comments: [
+            { author: "Joy", text: "I needed this reminder today. ❤️", date: "Oct 6, 2026" },
+            { author: "Michael", text: "One step at a time!", date: "Oct 6, 2026" }
+        ],
+        reposts: 23
     }
-
 ];
+
+// Load existing saved posts, or show demo posts on first visit.
+let posts = JSON.parse(localStorage.getItem("blogPosts")) || defaultPosts;
+
+// Ensure old saved posts have the fields required by this version.
+posts.forEach(post => {
+    post.reactions ||= {
+        "👍": 0, "❤️": 0, "😂": 0, "😮": 0, "😢": 0
+    };
+    post.comments ||= [];
+    post.likes ??= 0;
+    post.reposts ??= 0;
+    post.liked ??= false;
+});
+
+savePosts();
 
 
 function savePosts() {
